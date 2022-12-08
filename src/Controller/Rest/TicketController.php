@@ -20,8 +20,8 @@ class TicketController
     {
         header('Content-Type: application/json; charset=utf-8');
 
-        $eventId = (int) $args['event_id'];
-        $code = (string) $args['code'];
+        $eventId = isset($args['event_id']) ? (int) $args['event_id'] : 0;
+        $code = isset($args['code']) ? (string) $args['code'] : '';
 
         $errors = [];
         if ($eventId == null || is_int($eventId) == false || $eventId == 0) {
@@ -69,9 +69,9 @@ class TicketController
     {
         header('Content-Type: application/json; charset=utf-8');
 
-        $eventId = (int) $args['event_id'];
-        $code = (string) $args['code'];
-        $status = (string) $args['status'];
+        $eventId = isset($args['event_id']) ? (int) $args['event_id'] : 0;
+        $code = isset($args['code']) ? (string) $args['code'] : '';
+        $status = isset($args['status']) ? (string) $args['status'] : '';
 
         $errors = [];
         if ($eventId == null || is_int($eventId) == false || $eventId == 0) {

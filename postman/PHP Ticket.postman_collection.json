@@ -1,0 +1,84 @@
+{
+	"info": {
+		"_postman_id": "070a563d-315c-42af-a4e0-be6340c55161",
+		"name": "PHP Ticket",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Check Ticket",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "event_id",
+							"value": "1",
+							"type": "default"
+						},
+						{
+							"key": "code",
+							"value": "DTKVKJ0KNY",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/ticket/check",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"ticket",
+						"check"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Ticket",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "event_id",
+							"value": "1",
+							"type": "default"
+						},
+						{
+							"key": "code",
+							"value": "DTKVKJ0KNY",
+							"type": "default"
+						},
+						{
+							"key": "status",
+							"value": "claimed",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/ticket/update",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"ticket",
+						"update"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

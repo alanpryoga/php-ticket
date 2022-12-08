@@ -24,7 +24,8 @@ class TicketRepository
         foreach ($tickets as $ticket) {
             try {
                 $stmt->execute([$ticket['event_id'], $ticket['code'], $ticket['status']]);
-            } catch (\PDOException){
+            } catch (\PDOException $e){
+                var_dump($e->getMessage());
                 $this->dbConn->rollBack();
                 return false;
             }
@@ -41,7 +42,7 @@ class TicketRepository
         $stmt = $this->dbConn->prepare($query);
         $stmt->execute([$eventId, $code]);
 
-        $result = $stmt->fetch();
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
         $stmt = null;
 
         if (! $result) {

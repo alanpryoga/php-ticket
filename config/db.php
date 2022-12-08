@@ -2,9 +2,9 @@
 declare(strict_types=1);
 
 return [
-    'hostname' => 'localhost',
-    'username' => 'root',
-    'password' => '',
-    'database' => '',
+    'hostname' => '127.0.0.1',
+    'username' => 'halodoc',
+    'password' => 'halodocsecret',
+    'database' => 'halodoc',
     'port' => 3306
 ];

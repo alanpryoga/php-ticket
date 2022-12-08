@@ -3,10 +3,13 @@ declare(strict_types=1);
 
 namespace Alanpryoga\PhpTicket\Service;
 
+use Alanpryoga\PhpTicket\Repository\Db\EventRepository;
 use Alanpryoga\PhpTicket\Repository\Db\TicketRepository;
 
 class TicketService
 {
+    private EventRepository $eventDbRepo;
+
     private TicketRepository $ticketDbRepo;
 
     private const TICKET_DEFAULTSTATUS = 'available';
@@ -15,19 +18,30 @@ class TicketService
 
     private const TICKETCODE_RANDOMALPHANUMLEN = 7;
 
-    public function __construct(TicketRepository $ticketDbRepo)
+    public function __construct(EventRepository $eventDbRepo, TicketRepository $ticketDbRepo)
     {
+        $this->eventDbRepo = $eventDbRepo;
         $this->ticketDbRepo = $ticketDbRepo;
     }
 
     private function generateTicketCode(string $prefix, int $randomAlphaNumLen = 7) : string
     {
-        $bytes = random_bytes($randomAlphaNumLen);
-        return $prefix . strtoupper(bin2hex($bytes));
+        $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $randomAlphaNumLen; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $prefix . $randomString;
     }
 
     public function generateTickets(int $eventId, int $num) : bool
     {
+        $event = $this->eventDbRepo->getEventById($eventId);
+        if (count($event) == 0) {
+            return false;
+        }
+
         $tickets = [];
         for ($i=0; $i < $num; $i++) { 
             $ticketCode = '';
@@ -60,7 +74,10 @@ class TicketService
             return [];
         }
 
-        return $ticket;
+        return [
+            'ticket_code' => $ticket['code'],
+            'status' => $ticket['status']
+        ];
     }
 
     public function updateTicketStatus(int $eventId, string $code, string $status) : array
@@ -70,6 +87,12 @@ class TicketService
             return [];
         }
 
-        return $this->checkTicketStatus($eventId, $code);
+        $ticket = $this->ticketDbRepo->getTicketByEventIdAndCode($eventId, $code);
+
+        return [
+            'ticket_code' => $ticket['code'],
+            'status' => $ticket['status'],
+            'updated_at' => $ticket['updated_at']
+        ];
     }
 }

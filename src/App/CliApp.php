@@ -5,6 +5,7 @@ namespace Alanpryoga\PhpTicket\App;
 
 use Alanpryoga\PhpTicket\Controller\Cli\TicketController;
 use Alanpryoga\PhpTicket\Infrastructure\Db\MySqlConnector;
+use Alanpryoga\PhpTicket\Repository\Db\EventRepository;
 use Alanpryoga\PhpTicket\Repository\Db\TicketRepository;
 use Alanpryoga\PhpTicket\Service\TicketService;
 
@@ -27,8 +28,10 @@ class CliApp
             $this->dbConfig['port']
         );
 
+        $eventDbRepo = new EventRepository($mysqlDbConn);
+
         $ticketDbRepo = new TicketRepository($mysqlDbConn);
-        $ticketService = new TicketService($ticketDbRepo);
+        $ticketService = new TicketService($eventDbRepo, $ticketDbRepo);
         $ticketController = new TicketController($ticketService);
 
         if (isset($argv[1])) {

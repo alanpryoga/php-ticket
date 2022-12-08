@@ -5,6 +5,7 @@ namespace Alanpryoga\PhpTicket\App;
 
 use Alanpryoga\PhpTicket\Controller\Rest\TicketController;
 use Alanpryoga\PhpTicket\Infrastructure\Db\MySqlConnector;
+use Alanpryoga\PhpTicket\Repository\Db\EventRepository;
 use Alanpryoga\PhpTicket\Repository\Db\TicketRepository;
 use Alanpryoga\PhpTicket\Service\TicketService;
 
@@ -27,8 +28,10 @@ class RestApp
             $this->dbConfig['port']
         );
 
+        $eventDbRepo = new EventRepository($mysqlDbConn);
+
         $ticketDbRepo = new TicketRepository($mysqlDbConn);
-        $ticketService = new TicketService($ticketDbRepo);
+        $ticketService = new TicketService($eventDbRepo, $ticketDbRepo);
         $ticketController = new TicketController($ticketService);
 
         $request = $_SERVER['REQUEST_URI'];
@@ -40,7 +43,7 @@ class RestApp
                 echo 'Hello world!';
                 break;
             case '/ticket/check':
-                $ticketController->checkTicketStatus($_GET);
+                $ticketController->checkTicketStatus($_POST);
                 break;
             case '/ticket/update':
                 $ticketController->updateTicketStatus($_POST);
