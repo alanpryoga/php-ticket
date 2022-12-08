@@ -1,0 +1,15 @@
+{
+    "name": "alanpryoga/php-ticket",
+    "autoload": {
+        "psr-4": {
+            "Alanpryoga\\PhpTicket\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Ade Syahlan Prayoga",
+            "email": "imalanpryoga@gmail.com"
+        }
+    ],
+    "require": {}
+}
